@@ -242,6 +242,8 @@ GameObject:
   - 4: {fileID: 1904552382}
   - 114: {fileID: 1904552381}
   - 114: {fileID: 1904552383}
+  - 33: {fileID: 1904552385}
+  - 23: {fileID: 1904552384}
   m_Layer: 0
   m_Name: MapGen
   m_TagString: Untagged
@@ -262,8 +264,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 128
   height: 72
-  seed: 3241srg3sr5g4h
-  useRandomSeed: 1
+  seed: dgsg
+  useRandomSeed: 0
   randomFillPercent: 52
   smoothIterations: 5
 --- !u!4 &1904552382
@@ -289,3 +291,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93b3eff9b55a60445b1674017f489617, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!23 &1904552384
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1904552380}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 2100000, guid: fd19f2986a0c82143a14ab445829a7a1, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &1904552385
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1904552380}
+  m_Mesh: {fileID: 0}
