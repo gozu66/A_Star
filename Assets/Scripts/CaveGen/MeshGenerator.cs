@@ -31,6 +31,8 @@ public class MeshGenerator : MonoBehaviour
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
 
+        MeshCollider meshCol = gameObject.AddComponent<MeshCollider>();
+        meshCol.sharedMesh = mesh;
     }
 
     void TriangulateSquare(Square square)
