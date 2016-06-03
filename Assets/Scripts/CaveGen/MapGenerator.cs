@@ -35,7 +35,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         MeshGenerator meshGen = GetComponent<MeshGenerator>();
-        meshGen.GenereateMesh(map, 1);
+        meshGen.GenerateMesh(map, 1);
     }
 
     void RandomFillMap()

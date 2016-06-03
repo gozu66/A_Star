@@ -4,13 +4,15 @@ using System.Collections.Generic;
 
 public class MeshGenerator : MonoBehaviour
 {
+
     public SquareGrid squareGrid;
     List<Vector3> vertices;
     List<int> triangles;
 
-    public void GenereateMesh(int[,] map, float squareSize)
+    public void GenerateMesh(int[,] map, float squareSize)
     {
         squareGrid = new SquareGrid(map, squareSize);
+
         vertices = new List<Vector3>();
         triangles = new List<int>();
 
@@ -24,13 +26,15 @@ public class MeshGenerator : MonoBehaviour
 
         Mesh mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
+
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
+
     }
 
     void TriangulateSquare(Square square)
-    {        
+    {
         switch (square.configuration)
         {
             case 0:
@@ -88,10 +92,11 @@ public class MeshGenerator : MonoBehaviour
             case 15:
                 MeshFromPoints(square.topLeft, square.topRight, square.bottomRight, square.bottomLeft);
                 break;
-        }        
+        }
+
     }
 
-    void MeshFromPoints(params SQNode[] points)
+    void MeshFromPoints(params Node[] points)
     {
         AssignVertices(points);
 
@@ -106,11 +111,11 @@ public class MeshGenerator : MonoBehaviour
 
     }
 
-    void AssignVertices(SQNode[] points)
+    void AssignVertices(Node[] points)
     {
-        for(int i = 0; i < points.Length; i++)
+        for (int i = 0; i < points.Length; i++)
         {
-            if(points[i].vertexIndex == -1)
+            if (points[i].vertexIndex == -1)
             {
                 points[i].vertexIndex = vertices.Count;
                 vertices.Add(points[i].position);
@@ -118,44 +123,37 @@ public class MeshGenerator : MonoBehaviour
         }
     }
 
-    void CreateTriangle(SQNode a, SQNode b, SQNode c)
+    void CreateTriangle(Node a, Node b, Node c)
     {
         triangles.Add(a.vertexIndex);
         triangles.Add(b.vertexIndex);
         triangles.Add(c.vertexIndex);
     }
-/*
+
     void OnDrawGizmos()
     {
-        if (squareGrid != null)
-        {
-            for (int x = 0; x < squareGrid.squares.GetLength(0); x++)
-            {
-                for (int y = 0; y < squareGrid.squares.GetLength(1); y++)
-                {
-                    Gizmos.color = (squareGrid.squares[x, y].topLeft.active) ? Color.black : Color.white;
-                    Gizmos.DrawCube(squareGrid.squares[x, y].topLeft.position, Vector3.one * 0.5f);
-
-                    Gizmos.color = (squareGrid.squares[x, y].topRight.active) ? Color.black : Color.white;
-                    Gizmos.DrawCube(squareGrid.squares[x, y].topRight.position, Vector3.one * 0.5f);
-
-                    Gizmos.color = (squareGrid.squares[x, y].bottomLeft.active) ? Color.black : Color.white;
-                    Gizmos.DrawCube(squareGrid.squares[x, y].bottomLeft.position, Vector3.one * 0.5f);
-
-                    Gizmos.color = (squareGrid.squares[x, y].bottomRight.active) ? Color.black : Color.white;
-                    Gizmos.DrawCube(squareGrid.squares[x, y].bottomRight.position, Vector3.one * 0.5f);
-
-                    Gizmos.color = Color.gray;
-                    Gizmos.DrawCube(squareGrid.squares[x, y].centreBottom.position, Vector3.one * 0.15f);
-                    Gizmos.DrawCube(squareGrid.squares[x, y].centreLeft.position, Vector3.one * 0.15f);
-                    Gizmos.DrawCube(squareGrid.squares[x, y].centreTop.position, Vector3.one * 0.15f);
-                    Gizmos.DrawCube(squareGrid.squares[x, y].centreRight.position, Vector3.one * 0.15f);
-                }
-            }
-        }
+        /*
+		if (squareGrid != null) {
+			for (int x = 0; x < squareGrid.squares.GetLength(0); x ++) {
+				for (int y = 0; y < squareGrid.squares.GetLength(1); y ++) {
+					Gizmos.color = (squareGrid.squares[x,y].topLeft.active)?Color.black:Color.white;
+					Gizmos.DrawCube(squareGrid.squares[x,y].topLeft.position, Vector3.one * .4f);
+					Gizmos.color = (squareGrid.squares[x,y].topRight.active)?Color.black:Color.white;
+					Gizmos.DrawCube(squareGrid.squares[x,y].topRight.position, Vector3.one * .4f);
+					Gizmos.color = (squareGrid.squares[x,y].bottomRight.active)?Color.black:Color.white;
+					Gizmos.DrawCube(squareGrid.squares[x,y].bottomRight.position, Vector3.one * .4f);
+					Gizmos.color = (squareGrid.squares[x,y].bottomLeft.active)?Color.black:Color.white;
+					Gizmos.DrawCube(squareGrid.squares[x,y].bottomLeft.position, Vector3.one * .4f);
+					Gizmos.color = Color.grey;
+					Gizmos.DrawCube(squareGrid.squares[x,y].centreTop.position, Vector3.one * .15f);
+					Gizmos.DrawCube(squareGrid.squares[x,y].centreRight.position, Vector3.one * .15f);
+					Gizmos.DrawCube(squareGrid.squares[x,y].centreBottom.position, Vector3.one * .15f);
+					Gizmos.DrawCube(squareGrid.squares[x,y].centreLeft.position, Vector3.one * .15f);
+				}
+			}
+		}
+		*/
     }
-    */
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public class SquareGrid
     {
@@ -165,90 +163,86 @@ public class MeshGenerator : MonoBehaviour
         {
             int nodeCountX = map.GetLength(0);
             int nodeCountY = map.GetLength(1);
-
             float mapWidth = nodeCountX * squareSize;
             float mapHeight = nodeCountY * squareSize;
 
-            ControlSQNode[,] controlNodes = new ControlSQNode[nodeCountX, nodeCountY];
+            ControlNode[,] controlNodes = new ControlNode[nodeCountX, nodeCountY];
 
-            for(int x = 0; x < nodeCountX; x++)
+            for (int x = 0; x < nodeCountX; x++)
             {
-                for(int y = 0; y < nodeCountY; y++)
+                for (int y = 0; y < nodeCountY; y++)
                 {
                     Vector3 pos = new Vector3(-mapWidth / 2 + x * squareSize + squareSize / 2, 0, -mapHeight / 2 + y * squareSize + squareSize / 2);
-                    controlNodes[x, y] = new ControlSQNode(pos, map[x, y] == 1, squareSize);
+                    controlNodes[x, y] = new ControlNode(pos, map[x, y] == 1, squareSize);
                 }
             }
 
             squares = new Square[nodeCountX - 1, nodeCountY - 1];
-
             for (int x = 0; x < nodeCountX - 1; x++)
             {
                 for (int y = 0; y < nodeCountY - 1; y++)
                 {
-                    squares[x, y] = new Square(controlNodes[x + 1, y + 1], controlNodes[x, y + 1], controlNodes[x + 1, y], controlNodes[x, y]);
+                    squares[x, y] = new Square(controlNodes[x, y + 1], controlNodes[x + 1, y + 1], controlNodes[x + 1, y], controlNodes[x, y]);
                 }
             }
+
         }
     }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     public class Square
     {
-        public ControlSQNode topRight, topLeft, bottomRight, bottomLeft;
-        public SQNode centreTop, centreBottom, centreLeft, centreRight;
 
+        public ControlNode topLeft, topRight, bottomRight, bottomLeft;
+        public Node centreTop, centreRight, centreBottom, centreLeft;
         public int configuration;
 
-        public Square(ControlSQNode _topRight, ControlSQNode _topLeft, ControlSQNode _bottomRight, ControlSQNode _bottomLeft)
+        public Square(ControlNode _topLeft, ControlNode _topRight, ControlNode _bottomRight, ControlNode _bottomLeft)
         {
-            topRight = _topRight;
             topLeft = _topLeft;
-            bottomLeft = _bottomLeft;
+            topRight = _topRight;
             bottomRight = _bottomRight;
+            bottomLeft = _bottomLeft;
 
             centreTop = topLeft.right;
-            centreBottom = _bottomLeft.right;
-            centreLeft = bottomLeft.above;
             centreRight = bottomRight.above;
+            centreBottom = bottomLeft.right;
+            centreLeft = bottomLeft.above;
 
             if (topLeft.active)
                 configuration += 8;
             if (topRight.active)
                 configuration += 4;
-            if (bottomLeft.active)
-                configuration += 2;
             if (bottomRight.active)
+                configuration += 2;
+            if (bottomLeft.active)
                 configuration += 1;
         }
+
     }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public class SQNode
+    public class Node
     {
         public Vector3 position;
         public int vertexIndex = -1;
 
-        public SQNode(Vector3 _pos)
+        public Node(Vector3 _pos)
         {
             position = _pos;
         }
     }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public class ControlSQNode : SQNode
+    public class ControlNode : Node
     {
-        public bool active;
-        public SQNode above, right;
 
-        public ControlSQNode(Vector3 _pos, bool _active, float squaresize) : base(_pos)
+        public bool active;
+        public Node above, right;
+
+        public ControlNode(Vector3 _pos, bool _active, float squareSize) : base(_pos)
         {
             active = _active;
-            above = new SQNode(position + Vector3.forward * squaresize / 2f);
-            right = new SQNode(position + Vector3.right * squaresize / 2f);
+            above = new Node(position + Vector3.forward * squareSize / 2f);
+            right = new Node(position + Vector3.right * squareSize / 2f);
         }
+
     }
 }
