@@ -264,10 +264,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 128
   height: 72
-  seed: dgsg
+  seed: 22.48335
   useRandomSeed: 0
   randomFillPercent: 52
   smoothIterations: 5
+  cutRegions: 0
 --- !u!4 &1904552382
 Transform:
   m_ObjectHideFlags: 0
