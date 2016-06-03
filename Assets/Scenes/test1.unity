@@ -434,7 +434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cf00d21556fe074185dbf411a5e8e92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayGridGizmos: 1
+  displayGridGizmos: 0
   unWalkableMask:
     serializedVersion: 2
     m_Bits: 256
