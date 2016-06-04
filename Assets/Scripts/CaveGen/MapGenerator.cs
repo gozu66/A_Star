@@ -19,6 +19,11 @@ public class MapGenerator : MonoBehaviour
 
     public bool cutRegions;
 
+    void Start()
+    {
+        GenerateMap();
+    }
+
     void Update()
     {
         if (Input.GetButtonDown("Jump"))
@@ -29,6 +34,13 @@ public class MapGenerator : MonoBehaviour
 
     void GenerateMap()
     {
+        MeshCollider mc = GetComponent<MeshCollider>();
+        if(mc != null)
+        {
+            Destroy(mc);
+            //mc.enabled = false;
+        }
+
         map = new int[width, height];
         RandomFillMap();
 
@@ -178,26 +190,27 @@ public class MapGenerator : MonoBehaviour
     void CreatePassage(Room roomA, Room roomB, Coord tileA, Coord tileB)
     {
         Room.ConnectRooms(roomA, roomB);
-        Debug.DrawLine(CoordToWorldPoint(tileA), CoordToWorldPoint(tileB), Color.green, 100);
+        
+        Debug.DrawLine(CoordToWorldPoint(tileA), CoordToWorldPoint(tileB), Color.green, 5);
 
         List<Coord> line = GetLine(tileA, tileB);
-        foreach(Coord c in line)
+        foreach (Coord c in line)
         {
-            DrawCircle(c, 1);
+            DrawCircle(c, 2);
         }
     }
 
     void DrawCircle(Coord c, int r)
     {
-        for(int x = -r; x <= r; x++)
+        for (int x = -r; x <= r; x++)
         {
-            for(int y = -r; y <= r; y++)
+            for (int y = -r; y <= r; y++)
             {
-                if(x*x + y*y <= r*r)
+                if (x * x + y * y <= r * r)
                 {
                     int drawX = c.tileX + x;
                     int drawY = c.tileY + y;
-                    if(IsInMapRange(drawX, drawY))
+                    if (IsInMapRange(drawX, drawY))
                     {
                         map[drawX, drawY] = 0;
                     }
@@ -209,20 +222,21 @@ public class MapGenerator : MonoBehaviour
     List<Coord> GetLine(Coord from, Coord to)
     {
         List<Coord> line = new List<Coord>();
+
         int x = from.tileX;
         int y = from.tileY;
 
-        bool inverted = false;
         int dx = to.tileX - from.tileX;
         int dy = to.tileY - from.tileY;
 
+        bool inverted = false;
         int step = Math.Sign(dx);
         int gradientStep = Math.Sign(dy);
 
         int longest = Mathf.Abs(dx);
         int shortest = Mathf.Abs(dy);
 
-        if(longest < shortest)
+        if (longest < shortest)
         {
             inverted = true;
             longest = Mathf.Abs(dy);
@@ -233,33 +247,32 @@ public class MapGenerator : MonoBehaviour
         }
 
         int gradientAccumulation = longest / 2;
-        for(int i = 0; i < longest; i++)
+        for (int i = 0; i < longest; i++)
         {
             line.Add(new Coord(x, y));
 
-            if(inverted)
+            if (inverted)
             {
                 y += step;
             }
-            else
-            {
+            else {
                 x += step;
             }
 
             gradientAccumulation += shortest;
-            if(gradientAccumulation>= longest)
+            if (gradientAccumulation >= longest)
             {
-                if(inverted)
+                if (inverted)
                 {
                     x += gradientStep;
                 }
-                else
-                {
+                else {
                     y += gradientStep;
                 }
-                gradientStep -= longest;
+                gradientAccumulation -= longest;
             }
         }
+
         return line;
     }
 
@@ -344,7 +357,7 @@ public class MapGenerator : MonoBehaviour
         {
             for(int y = 0; y < height; y++)
             {
-                if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
+                if (x <= 0 || x == width - 1 || y == 0 || y == height - 1)
                 {
                     map[x, y] = 1;
                 }

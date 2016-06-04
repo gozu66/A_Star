@@ -262,11 +262,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b4f53460e471c242aa4dd735e591a5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 128
-  height: 72
-  seed: Sebastian
-  useRandomSeed: 0
-  randomFillPercent: 49
+  width: 200
+  height: 100
+  seed: 70.26583
+  useRandomSeed: 1
+  randomFillPercent: 52
   smoothIterations: 5
   cutRegions: 1
   wallThreshold: 50
