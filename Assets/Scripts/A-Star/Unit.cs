@@ -7,14 +7,28 @@ public class Unit : MonoBehaviour
     public float speed = 1;
     Vector3[] path;
     int targetIndex;
+    spawner _spawner;
 
-    public void Start()
+    void Start()
     {
+        _spawner = FindObjectOfType<spawner>();
         if(target == null)
         {
             target = GameObject.FindGameObjectWithTag("target").transform;
         }
+        //path = null;
         PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+    }
+
+    public void otherStart()
+    {
+        if (target == null)
+        {
+            target = GameObject.FindGameObjectWithTag("target").transform;
+        }
+        
+        PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+
     }
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
@@ -26,6 +40,7 @@ public class Unit : MonoBehaviour
             StartCoroutine("FollowPath");
         }else
         {
+            _spawner.kill(this);
             Destroy(gameObject);
         }
     }
@@ -36,11 +51,12 @@ public class Unit : MonoBehaviour
 
         while(true)
         {
-            if(transform.position == currentWaypoint)
+            if (transform.position == currentWaypoint)
             {
                 targetIndex++;
                 if(targetIndex >= path.Length)
                 {
+                    _spawner.kill(this);
                     Destroy(gameObject);
                     yield break;
                 }

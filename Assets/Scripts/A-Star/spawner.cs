@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class spawner : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class spawner : MonoBehaviour
     public List<Unit> agents;
 
     public GameObject seekerPrefab;
+
+    public Text _text;
 
     void Awake()
     {
@@ -22,6 +25,8 @@ public class spawner : MonoBehaviour
 
     void Update()
     {
+        _text.text = "Agents: " + agents.Count.ToString();
+
         if(Input.GetMouseButton(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -65,14 +70,20 @@ public class spawner : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
+    }
+
+    public void kill(Unit obj)
+    {
+        agents.Remove(obj);
     }
 
     void resetTargets()
     {
         foreach(Unit seeker in agents)
         {
-            seeker.Start();
-            //print("x");
+            //seeker.otherStart();
         }
     }
 }

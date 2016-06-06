@@ -26,7 +26,6 @@ public class Grid : MonoBehaviour
         gridSizeY = Mathf.RoundToInt(worldSize.y / nodeDiameter);
 
         agents = FindObjectsOfType<Unit>();
-        //CreateGrid();
     }
     
     void Update()

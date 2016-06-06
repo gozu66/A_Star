@@ -37,7 +37,6 @@ public class MapGenerator : MonoBehaviour
                 Destroy(u.gameObject);
             }
             GenerateMap();
-            //AStarGrid.CreateGrid();
             StartCoroutine("WaitForGrid");
         }
     }
@@ -48,7 +47,6 @@ public class MapGenerator : MonoBehaviour
         if(mc != null)
         {
             Destroy(mc);
-            //mc.enabled = false;
         }
 
         map = new int[width, height];
