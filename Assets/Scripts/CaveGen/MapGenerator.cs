@@ -19,6 +19,8 @@ public class MapGenerator : MonoBehaviour
 
     public bool cutRegions;
 
+    public Grid AStarGrid;
+
     void Start()
     {
         GenerateMap();
@@ -26,9 +28,17 @@ public class MapGenerator : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Jump"))
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
+            Unit[] seekers = FindObjectsOfType<Unit>();
+            foreach(Unit u in seekers)
+            {
+                Destroy(u.gameObject);
+            }
             GenerateMap();
+            //AStarGrid.CreateGrid();
+            StartCoroutine("WaitForGrid");
         }
     }
 
@@ -54,6 +64,13 @@ public class MapGenerator : MonoBehaviour
 
         MeshGenerator meshGen = GetComponent<MeshGenerator>();
         meshGen.GenerateMesh(map, 1);
+        AStarGrid.CreateGrid();
+    }
+
+    IEnumerator WaitForGrid()
+    {
+        yield return new WaitForSeconds(0.25f);
+        AStarGrid.CreateGrid();
     }
 
     public int wallThreshold = 50;

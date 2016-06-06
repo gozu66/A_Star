@@ -8,8 +8,12 @@ public class Unit : MonoBehaviour
     Vector3[] path;
     int targetIndex;
 
-    void Start()
+    public void Start()
     {
+        if(target == null)
+        {
+            target = GameObject.FindGameObjectWithTag("target").transform;
+        }
         PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
     }
 
@@ -20,6 +24,9 @@ public class Unit : MonoBehaviour
             path = newPath;
             StopCoroutine("FollowPath");
             StartCoroutine("FollowPath");
+        }else
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -34,6 +41,7 @@ public class Unit : MonoBehaviour
                 targetIndex++;
                 if(targetIndex >= path.Length)
                 {
+                    Destroy(gameObject);
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
@@ -42,7 +50,7 @@ public class Unit : MonoBehaviour
             yield return null;
         }
     }
-
+/*
     public void OnDrawGizmos()
     {
         if(path != null)
@@ -65,4 +73,5 @@ public class Unit : MonoBehaviour
             }
         }
     }
+    */
 }

@@ -16,6 +16,8 @@ public class Grid : MonoBehaviour
 
     int gridSizeX, gridSizeY;
 
+    Unit[] agents;
+
     void Awake()
     {
         nodeDiameter = nodeRadius * 2;
@@ -23,9 +25,16 @@ public class Grid : MonoBehaviour
         gridSizeX = Mathf.RoundToInt(worldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(worldSize.y / nodeDiameter);
 
-        CreateGrid();
+        agents = FindObjectsOfType<Unit>();
+        //CreateGrid();
     }
     
+    void Update()
+    {
+       /* if (Input.GetKeyDown(KeyCode.A))
+            CreateGrid();*/
+    }
+
     public int MaxSize
     {
         get
@@ -34,7 +43,7 @@ public class Grid : MonoBehaviour
         }
     }
 
-    void CreateGrid()
+    public void CreateGrid()
     {
         grid = new Node[gridSizeX, gridSizeY];
 
@@ -48,6 +57,11 @@ public class Grid : MonoBehaviour
                 bool walkable = !(Physics.CheckSphere(worldPosition, nodeRadius, unWalkableMask));
                 grid[x, y] = new Node(walkable, worldPosition, x, y);
             }
+        }
+
+        for(int i = 0; i < agents.Length; i++)
+        {
+            agents[i].enabled = true;
         }
     }
 

@@ -9,6 +9,8 @@ public class MeshGenerator : MonoBehaviour
     List<Vector3> vertices;
     List<int> triangles;
 
+    public Grid AStarGrid;
+
     public void GenerateMesh(int[,] map, float squareSize)
     {
         squareGrid = new SquareGrid(map, squareSize);
@@ -31,6 +33,13 @@ public class MeshGenerator : MonoBehaviour
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
 
+        /*
+        MeshCollider mc = GetComponent<MeshCollider>();
+        if (mc != null)
+        {
+            Destroy(mc);
+            //mc.enabled = false;
+        }*/
         MeshCollider meshCol = gameObject.AddComponent<MeshCollider>();
         meshCol.sharedMesh = mesh;
     }
